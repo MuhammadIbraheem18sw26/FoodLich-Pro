@@ -7,27 +7,36 @@ class ExploreScreen extends StatelessWidget {
   ExploreScreen({Key? key}) : super(key: key);
 
   final MockFooderlichService mockFooderlichService = MockFooderlichService();
-
   @override
   Widget build(BuildContext context) {
+    // 1
     return FutureBuilder(
+      // 2
       future: mockFooderlichService.getExploreData(),
+      // 3
       builder: (context, AsyncSnapshot<ExploreData> snapshot) {
-        // TODO: Add Nested List Views
-
+        // 4
         if (snapshot.connectionState == ConnectionState.done) {
-          final recipes = snapshot.data?.todayRecipes ?? [];
-          // TODO: Replace this with TodayRecipeListView
-          return Center(
-            child: Container(
-              child: const Text('Show TodayRecipeListView'),
-            ),
+          // 5
+          return ListView(
+            // 6
+            scrollDirection: Axis.vertical,
+            children: [
+              // 7
+              TodayRecipeListView(recipes: snapshot.data?.todayRecipes ?? []),
+              // 8
+              const SizedBox(height: 16),
+              // 9
+              // TODO: Replace this with FriendPostListView
+              Container(
+                height: 400,
+                color: Colors.green,
+              ),
+            ],
           );
         } else {
-          // 6
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          // 10
+          return const Center(child: CircularProgressIndicator());
         }
       },
     );
