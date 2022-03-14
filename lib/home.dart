@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foodlich_pro/screens/explore_screen.dart';
 import 'screens/recipes_screen.dart';
 import 'screens/grocery_screen.dart';
+import 'screens/empty_grocery_screen.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
