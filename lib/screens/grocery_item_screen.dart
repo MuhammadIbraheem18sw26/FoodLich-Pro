@@ -61,20 +61,277 @@ class _GroceryItemScreenState extends State<GroceryItemScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO 12: Add GroceryItemScreen Scaffold
-    return Container(color: Colors.orange);
+    return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.check),
+            onPressed: () {
+              // TODO 24: Add callback handler
+            },
+          )
+        ],
+        // 3
+        elevation: 0.0,
+        // 4
+        title: Text(
+          'Grocery Item',
+          style: GoogleFonts.lato(fontWeight: FontWeight.w600),
+        ),
+      ),
+      body: Container(
+        padding: const EdgeInsets.all(16.0),
+        child: ListView(
+          children: [
+            buildNameField(),
+            const SizedBox(height: 10.0),
+            buildImportanceField(),
+            const SizedBox(height: 10.0),
+            buildDateField(context),
+            const SizedBox(height: 10.0),
+            buildTimeField(context),
+            const SizedBox(height: 10.0),
+            buildColorPicker(context),
+            const SizedBox(height: 10.0),
+            buildQuantityField(),
+          ],
+        ),
+      ),
+    );
   }
 
-// TODO: Add buildNameField()
+  Widget buildNameField() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Item Name',
+          style: GoogleFonts.lato(fontSize: 28.0),
+        ),
+        TextField(
+          controller: _nameController,
+          cursorColor: _currentColor,
+          decoration: InputDecoration(
+            hintText: 'E.g. Apples, Banana, 1 Bag of salt',
+            enabledBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.white),
+            ),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: _currentColor),
+            ),
+            border: UnderlineInputBorder(
+              borderSide: BorderSide(color: _currentColor),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
-// TODO: Add buildImportanceField()
+  Widget buildImportanceField() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Importance',
+          style: GoogleFonts.lato(fontSize: 28.0),
+        ),
+        Wrap(
+          spacing: 10.0,
+          children: [
+            ChoiceChip(
+              selectedColor: Colors.black,
+              selected: _importance == Importance.low,
+              label: const Text(
+                'low',
+                style: TextStyle(color: Colors.white),
+              ),
+              onSelected: (selected) {
+                setState(() => _importance = Importance.low);
+              },
+            ),
+            ChoiceChip(
+              selectedColor: Colors.black,
+              selected: _importance == Importance.medium,
+              label: const Text(
+                'medium',
+                style: TextStyle(color: Colors.white),
+              ),
+              onSelected: (selected) {
+                setState(() => _importance = Importance.medium);
+              },
+            ),
+            ChoiceChip(
+              selectedColor: Colors.black,
+              selected: _importance == Importance.high,
+              label: const Text(
+                'high',
+                style: TextStyle(color: Colors.white),
+              ),
+              onSelected: (selected) {
+                setState(() => _importance = Importance.high);
+              },
+            ),
+          ],
+        )
+      ],
+    );
+  }
 
-// TODO: ADD buildDateField()
+  Widget buildDateField(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Date',
+              style: GoogleFonts.lato(fontSize: 28.0),
+            ),
+            TextButton(
+              child: const Text('Select'),
+              onPressed: () async {
+                final currentDate = DateTime.now();
 
-// TODO: Add buildTimeField()
+                final selectedDate = await showDatePicker(
+                  context: context,
+                  initialDate: currentDate,
+                  firstDate: currentDate,
+                  lastDate: DateTime(currentDate.year + 5),
+                );
 
-// TODO: Add buildColorPicker()
+                setState(() {
+                  if (selectedDate != null) {
+                    _dueDate = selectedDate;
+                  }
+                });
+              },
+            ),
+          ],
+        ),
+        Text('${DateFormat('yyyy-MM-dd').format(_dueDate)}'),
+      ],
+    );
+  }
 
-// TODO: Add buildQuantityField()
+  Widget buildTimeField(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Time of Day',
+              style: GoogleFonts.lato(fontSize: 28.0),
+            ),
+            TextButton(
+              child: const Text('Select'),
+              onPressed: () async {
+                final timeOfDay = await showTimePicker(
+                  initialTime: TimeOfDay.now(),
+                  context: context,
+                );
 
+                setState(() {
+                  if (timeOfDay != null) {
+                    _timeOfDay = timeOfDay;
+                  }
+                });
+              },
+            ),
+          ],
+        ),
+        Text('${_timeOfDay.format(context)}'),
+      ],
+    );
+  }
+
+  Widget buildColorPicker(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            Container(
+              height: 50.0,
+              width: 20.0,
+              color: _currentColor,
+            ),
+            const SizedBox(width: 8.0),
+            Text(
+              'Color',
+              style: GoogleFonts.lato(fontSize: 28.0),
+            ),
+          ],
+        ),
+        TextButton(
+          child: const Text('Select'),
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  content: BlockPicker(
+                    pickerColor: Colors.white,
+                    onColorChanged: (color) {
+                      setState(() => _currentColor = color);
+                    },
+                  ),
+                  actions: [
+                    TextButton(
+                      child: const Text('Save'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget buildQuantityField() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.baseline,
+          textBaseline: TextBaseline.alphabetic,
+          children: [
+            Text(
+              'Quantity',
+              style: GoogleFonts.lato(fontSize: 28.0),
+            ),
+            const SizedBox(width: 16.0),
+            Text(
+              _currentSliderValue.toInt().toString(),
+              style: GoogleFonts.lato(fontSize: 18.0),
+            ),
+          ],
+        ),
+        Slider(
+          inactiveColor: _currentColor.withOpacity(0.5),
+          activeColor: _currentColor,
+          value: _currentSliderValue.toDouble(),
+          min: 0.0,
+          max: 100.0,
+          divisions: 100,
+          label: _currentSliderValue.toInt().toString(),
+          onChanged: (double value) {
+            setState(
+              () {
+                _currentSliderValue = value.toInt();
+              },
+            );
+          },
+        ),
+      ],
+    );
+  }
 }
