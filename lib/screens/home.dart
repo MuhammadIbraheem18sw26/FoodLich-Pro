@@ -31,7 +31,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Fooderlich',
+          'Fooderlich Pro',
           style: Theme.of(context).textTheme.headline6,
         ),
         actions: [

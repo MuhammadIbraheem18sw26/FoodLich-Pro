@@ -21,7 +21,7 @@ class GroceryListScreen extends StatelessWidget {
         itemCount: groceryItems.length,
         itemBuilder: (context, index) {
           final item = groceryItems[index];
-          // TODO 28: Wrap in a Dismissable
+
           return Dismissible(
             key: Key(item.id),
             direction: DismissDirection.endToStart,
