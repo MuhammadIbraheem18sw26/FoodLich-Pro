@@ -104,18 +104,14 @@ class _GroceryItemScreenState extends State<GroceryItemScreen> {
               );
 
               if (widget.isUpdating) {
-                // 2
                 widget.onUpdate(groceryItem, widget.index);
               } else {
-                // 3
                 widget.onCreate(groceryItem);
               }
             },
           )
         ],
-        // 3
         elevation: 0.0,
-        // 4
         title: Text(
           'Grocery Item',
           style: GoogleFonts.lato(fontWeight: FontWeight.w600),
