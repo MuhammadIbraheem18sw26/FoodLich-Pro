@@ -59,7 +59,8 @@ class AppRouter extends RouterDelegate
             },
             onCreate: (_) {},
           ),
-        // TODO: Add Profile Screen
+        if (profileManager.didSelectUser)
+          ProfileScreen.page(profileManager.getUser),
         // TODO: Add WebView Screen
       ],
     );
@@ -76,7 +77,9 @@ class AppRouter extends RouterDelegate
     if (route.settings.name == FooderlichPages.groceryItemDetails) {
       groceryManager.groceryItemTapped(-1);
     }
-    // TODO: Handle state when user closes profile screen
+    if (route.settings.name == FooderlichPages.profilePath) {
+      profileManager.tapOnProfile(false);
+    }
     // TODO: Handle state when user closes WebView screen
     // 6
     return true;
