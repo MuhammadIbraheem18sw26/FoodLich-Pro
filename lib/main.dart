@@ -58,10 +58,11 @@ class _FooderlichProState extends State<FooderlichPro> {
 
           return MaterialApp(
             theme: theme,
-            title: 'Fooderlich',
+            title: 'Fooderlich_Pro',
+            debugShowCheckedModeBanner: false,
             home: Router(
               routerDelegate: _appRouter,
-              // TODO: Add backButtonDispatcher
+              backButtonDispatcher: RootBackButtonDispatcher(),
             ),
           );
         },
